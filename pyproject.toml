@@ -1,7 +1,7 @@
 [project]
-name = "notification"
+name = "notification-mcp"
 version = "0.1.0"
-description = "一个基于 FastMCP 的消息推送工具，支持 PushDeer、Bark 等多种推送渠道，并提供截图功能"
+description = "一个基于 FastMCP 的消息推送工具，支持 PushDeer、Bark 等多种推送渠道"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
