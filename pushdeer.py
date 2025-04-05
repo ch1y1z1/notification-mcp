@@ -9,6 +9,9 @@ mcp = FastMCP("PushDeer Message Pusher", dependencies=["httpx"])
 
 # 从环境变量获取配置
 PUSHDEER_KEYS = os.getenv("PUSHDEER_KEYS", "").split(",")
+if not PUSHDEER_KEYS or not PUSHDEER_KEYS[0]:
+    raise ValueError("PUSHDEER_KEYS 不能为空")
+
 PUSHDEER_SERVER = os.getenv("PUSHDEER_SERVER", "https://api2.pushdeer.com")
 
 
@@ -37,9 +40,6 @@ async def send_message(
     Returns:
         str: 发送结果
     """
-    if not PUSHDEER_KEYS or not PUSHDEER_KEYS[0]:
-        return "错误：未配置推送密钥，请设置 PUSHDEER_KEYS 环境变量"
-
     # 如果指定了 pushkey，则只使用该密钥
     keys = [pushkey] if pushkey else PUSHDEER_KEYS
 
