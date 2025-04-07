@@ -116,5 +116,9 @@ async def send_image(
     )
 
 
-if __name__ == "__main__":
+def main():
     mcp.run()
+
+
+if __name__ == "__main__":
+    main()

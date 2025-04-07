@@ -44,5 +44,9 @@ async def send_message(title: str, content: str) -> str:
     return "\n".join(results)
 
 
-if __name__ == "__main__":
+def main():
     mcp.run()
+
+
+if __name__ == "__main__":
+    main()

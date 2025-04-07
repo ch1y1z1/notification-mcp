@@ -1,80 +1,59 @@
 # 消息推送服务 (MCP)
 
-这是一个使用 [FastMCP](https://github.com/your-fastmcp-repo) 框架构建的消息推送服务集合。它允许您通过简单的 API 调用将消息发送到 PushDeer 和 Bark 服务。
+[![PyPI](https://img.shields.io/pypi/v/notification-mcp.svg)](https://pypi.org/project/notification-mcp/)
+
+这是一个使用 [FastMCP](https://github.com/ch1y1z1/fastmcp) 框架构建的消息推送服务集合。它支持 Bark 和 PushDeer。
+
+![show](image.png)
+
+## 使用
+
+这个包提供了两个主要命令：`mcp-bark` 和 `mcp-pushdeer`。你可以使用像 `uvx` 或 `pipx` 这样的工具来运行它们。
+
+**使用 `uvx` 的例子：**
+
+```bash
+# 运行 Bark 服务
+# 这将启动 Bark 通知的 MCP 服务器
+uvx --from notification_mcp mcp-bark
+
+# 运行 PushDeer 服务
+# 这将启动 PushDeer 通知的 MCP 服务器
+uvx --from notification_mcp mcp-pushdeer
+```
+
+一旦服务启动，你就可以使用 FastMCP 客户端或其他兼容方法来与工具（如 `send_message`）进行交互。
+
+## 环境变量
+
+在运行命令之前，请配置以下环境变量：
+
+**对于 Bark (`mcp-bark`）：**
+
+*   `BARK_DEVICE_KEYS`: **必需**。逗号分隔的 Bark 设备密钥列表（例如 `key1,key2`）。
+*   `BARK_SERVER`: 可选。自建 Bark 服务器 URL，默认为 `https://api.day.app`。
+
+**对于 PushDeer (`mcp-pushdeer`）：**
+
+*   `PUSHDEER_KEYS`: **必需**。逗号分隔的 PushDeer 密钥列表（例如 `keyA,keyB`）。
+*   `PUSHDEER_SERVER`: 可选。自建 PushDeer 服务器 URL，默认为 `https://api2.pushdeer.com`。
 
 ## 功能
 
-- **PushDeer 推送** (`pushdeer.py`):
-    - 发送文本消息 (`send_message`)
-    - 发送 Markdown 格式消息 (`send_markdown`)
-    - 发送图片消息 (`send_image`)
-- **Bark 推送** (`barkme.py`):
-    - 发送带有标题和内容的消息 (`send_message`)
+### Bark 服务 (`mcp-bark`)
 
-## 依赖
+提供以下工具：
 
-- Python 3.x
-- `httpx`
-- `fastmcp` (请确保已安装)
+*   **`send_message(title: str, content: str) -> str`**: 向所有配置的 Bark 设备发送带有指定标题和内容的通知。
 
-具体依赖请参考 `pyproject.toml`。
+### PushDeer 服务 (`mcp-pushdeer`)
 
-## 安装与配置
+提供以下工具：
 
-1.  **克隆仓库** (如果尚未完成):
-    ```bash
-    git clone <your-repo-url>
-    cd mcp/fmt
-    ```
+*   **`send_message(text: str, desp: Optional[str] = None, type: str = 'text', pushkey: Optional[str] = None) -> str`**: 发送消息。`type` 可以是 'text'、'markdown' 或 'image'（其中 `text` 是图像 URL）。
+*   **`send_markdown(markdown: str, desp: Optional[str] = None, pushkey: Optional[str] = None) -> str`**: 一个发送 Markdown 消息的便捷工具。
+*   **`send_image(image_url: str, desp: Optional[str] = None, pushkey: Optional[str] = None) -> str`**: 一个通过 URL 发送图像消息的便捷工具。
 
-2.  **安装依赖**:
-    建议使用虚拟环境。
-    ```bash
-    # 使用 uv (推荐)
-    uv venv
-    source .venv/bin/activate
-    uv pip install -r requirements.txt # 如果有 requirements.txt
-    # 或者根据 pyproject.toml 安装
-    uv pip install .
+## 许可
 
-    # 或者使用 pip
-    # python -m venv .venv
-    # source .venv/bin/activate
-    # pip install httpx fastmcp # 根据 pyproject.toml 调整
-    ```
-
-3.  **配置环境变量**:
-
-    在运行脚本前，请设置以下环境变量：
-
-    - **PushDeer (`pushdeer.py`)**:
-        - `PUSHDEER_KEYS`: 必需。您的 PushDeer 推送密钥，多个密钥用英文逗号 `,` 分隔。
-        - `PUSHDEER_SERVER`: 可选。您的自建 PushDeer 服务器地址，默认为 `https://api2.pushdeer.com`。
-    - **Bark (`barkme.py`)**:
-        - `BARK_DEVICE_KEYS`: 必需。您的 Bark 设备密钥，多个密钥用英文逗号 `,` 分隔。
-        - `BARK_SERVER`: 可选。您的自建 Bark 服务器地址，默认为 `https://api.day.app`。
-
-    您可以将这些变量设置在 `.env` 文件中 (如果您的环境支持)，或者直接在运行环境中导出。
-
-## 运行服务
-
-您可以使用 `FastMCP` 提供的命令行工具来运行这些服务，或者直接运行 Python 脚本：
-
-```bash
-# 运行 PushDeer 服务
-# 方法一: 使用 FastMCP CLI
-fastmcp run pushdeer.py
-# 方法二: 直接运行脚本
-python pushdeer.py
-
-# 运行 Bark 服务
-# 方法一: 使用 FastMCP CLI
-fastmcp run barkme.py
-# 方法二: 直接运行脚本
-python barkme.py
-```
-
-
-## 贡献
-
-欢迎提交 Pull Request 或提出 Issue。
+MIT
